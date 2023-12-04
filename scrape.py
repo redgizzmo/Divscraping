@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-
 ticker = "T"
 url = f"https://finviz.com/quote.ashx?t={ticker}"
 response = requests.get(url)
@@ -15,4 +14,4 @@ dividend_yield = soup.select_one(
 
 print(f"EPS: {eps}")
 print(f"Stock Price: {stock_price}")
-print(f"Dividend Yield: {dividend_yield}"
+print(f"Dividend Yield: {dividend_yield}")
