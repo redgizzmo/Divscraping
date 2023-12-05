@@ -22,7 +22,7 @@ def fetch_financial_info(ticker):
             'Stock Price': get_value(soup, 'Price'),
             'Dividend in USD': get_value(soup, 'Dividend'),
             'Dividend Yield': get_value(soup, 'Dividend %'),
-            'Dividend Payout Ratio': get_value(soup, "Dividend %% of Earnings"),
+            'Dividend Payout Ratio': get_value(soup, "Dividend % of Earnings"),
             'P/E (ttm)': get_value(soup, 'P/E'),
             'Forward P/E': get_value(soup, 'Forward P/E'),
             'Shares Outstanding': get_value(soup, 'Shs Outstand'),
