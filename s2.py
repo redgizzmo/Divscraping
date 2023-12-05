@@ -31,7 +31,7 @@ def fetch_financial_info(ticker):
 
 
 def get_value(soup, label):
-    element = soup.find('td', text=label)
+    element = soup.find('td', string=label)
     if element:
         return element.find_next('b').get_text(strip=True)
     else:
