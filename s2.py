@@ -18,14 +18,14 @@ def fetch_financial_info(ticker):
 
         # Extract general financial information
         financial_info = {
-            'EPS': get_value(soup, 'EPS (ttm)'),
+            'EPS (ttm)': get_value(soup, 'EPS (ttm)'),
             'Stock Price': get_value(soup, 'Price'),
             'Dividend in USD': get_value(soup, 'Dividend'),
             'Dividend Payout Ratio': calculate_payout_ratio(soup),
             'Dividend Yield': get_value(soup, 'Dividend %'),
-            'P/E (ttm)': get_value(soup, 'P/E'),
+            'P/E': get_value(soup, 'P/E'),
             'Forward P/E': get_value(soup, 'Forward P/E'),
-            'Shares Outstanding': get_value(soup, 'Shs Outstand'),
+            'Shares Outstanding': get_numeric_value(soup, 'Shs Outstand'),
         }
 
         return financial_info
@@ -41,6 +41,19 @@ def get_value(soup, label):
         value_element = label_element.find_next('td', class_='snapshot-td2')
         if value_element:
             return value_element.get_text(strip=True)
+    return 'N/A'
+
+
+def get_numeric_value(soup, label):
+    label_element = soup.find('td', class_='snapshot-td2', string=label)
+    if label_element:
+        value_element = label_element.find_next('td', class_='snapshot-td2')
+        if value_element:
+            numeric_value = value_element.get_text(strip=True)
+            # Remove non-numeric characters
+            numeric_value = ''.join(
+                char for char in numeric_value if char.isdigit() or char == '.')
+            return numeric_value if numeric_value else 'N/A'
     return 'N/A'
 
 
