@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def get_dividend_info(ticker):
     # Define the URL for the Finviz page
     url = f'https://finviz.com/quote.ashx?t={ticker}'
@@ -24,7 +25,10 @@ def get_dividend_info(ticker):
             'Dividend Yield': dividend_yield
         }
     else:
-        print(f"Error: Unable to fetch data. Status Code: {response.status_code}")
+        print(
+            f"Error: Unable to fetch data. Status Code: {response.status_code}")
+        print(response.text)
+
 
 # Specify the ticker symbol (e.g., 'T' for AT&T)
 ticker_symbol = 'T'
@@ -38,6 +42,3 @@ if dividend_info:
     print(f"EPS: {dividend_info['EPS']}")
     print(f"Stock Price: {dividend_info['Stock Price']}")
     print(f"Dividend Yield: {dividend_info['Dividend Yield']}")
-
-
-
