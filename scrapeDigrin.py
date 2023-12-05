@@ -32,7 +32,7 @@ def scrape_digrin(ticker):
 
 
 def get_digrin_data(soup, label):
-    label_element = soup.find('td', text=label)
+    label_element = soup.find('td', string=label)
     if label_element:
         data_element = label_element.find_next('td')
         if data_element:
