@@ -2,43 +2,48 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_dividend_info(ticker):
-    # Define the URL for the Finviz page
+def fetch_financial_info(ticker):
+    # Define the Finviz URL
     url = f'https://finviz.com/quote.ashx?t={ticker}'
 
-    # Send an HTTP request to the URL
-    response = requests.get(url)
+    try:
+        # Send HTTP request and check for successful response
+        response = requests.get(url)
+        response.raise_for_status()
 
-    # Check if the request was successful (status code 200)
-    if response.status_code == 200:
-        # Parse the HTML content of the page
+        # Parse HTML content
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Extract dividend-related information
-        eps = soup.find(text='EPS (ttm):').find_next('b').text
-        stock_price = soup.find(text='Price:').find_next('b').text
-        dividend_yield = soup.find(text='Dividend %:').find_next('b').text
-
-        return {
-            'EPS': eps,
-            'Stock Price': stock_price,
-            'Dividend Yield': dividend_yield
+        # Extract general financial information
+        financial_info = {
+            'EPS': soup.find(text='EPS (ttm):').find_next('b').text,
+            'Stock Price': soup.find(text='Price:').find_next('b').text,
+            'Dividend Yield': soup.find(text='Dividend %:').find_next('b').text
         }
+
+        return financial_info
+
+    except requests.RequestException as e:
+        print(f"Error: Unable to fetch data for {ticker}. {e}")
+        return None
+
+
+def main():
+    # Get user input for the ticker symbol
+    ticker_symbol = input(
+        "Enter the ticker symbol (e.g., T for AT&T): ").upper()
+
+    # Fetch financial information
+    financial_info = fetch_financial_info(ticker_symbol)
+
+    # Display the obtained information
+    if financial_info:
+        print(f"\nFinancial Information for {ticker_symbol}:")
+        for key, value in financial_info.items():
+            print(f"{key}: {value}")
     else:
-        print(
-            f"Error: Unable to fetch data. Status Code: {response.status_code}")
-        print(response.text)
+        print("Exiting due to an error.")
 
 
-# Specify the ticker symbol (e.g., 'T' for AT&T)
-ticker_symbol = 'T'
-
-# Get dividend information for the specified ticker
-dividend_info = get_dividend_info(ticker_symbol)
-
-# Print the obtained information
-if dividend_info:
-    print(f"Dividend Information for {ticker_symbol}:")
-    print(f"EPS: {dividend_info['EPS']}")
-    print(f"Stock Price: {dividend_info['Stock Price']}")
-    print(f"Dividend Yield: {dividend_info['Dividend Yield']}")
+if __name__ == "__main__":
+    main()
