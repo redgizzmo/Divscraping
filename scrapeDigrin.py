@@ -32,7 +32,7 @@ def fetch_digrin_data(ticker):
 
 
 def extract_dgr(soup, label):
-    dgr_element = soup.find('div', class_='col-sm-3')
+    dgr_element = soup.find('div', class_='col-sm-3', string=label)
     if dgr_element:
         dgr_label = dgr_element.find('p', text=f"{label}:")
         if dgr_label:
