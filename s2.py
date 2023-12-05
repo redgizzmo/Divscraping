@@ -46,17 +46,12 @@ def get_value(soup, label):
 
 def calculate_payout_ratio(soup):
     dividend_in_usd = get_value(soup, 'Dividend')
-    eps = get_value(soup, 'EPS (ttm)')
+    eps_next_y = get_value(soup, 'EPS next Y')
 
-    if dividend_in_usd != 'N/A' and eps != 'N/A':
-        # Convert EPS to float and handle negative values
-        eps_value = float(eps.replace(',', '')) if ',' in eps else float(eps)
-
-        # Ensure EPS is not zero to avoid division by zero
-        if eps_value != 0:
-            payout_ratio = (float(dividend_in_usd.replace(
-                '$', '').replace(',', '')) / eps_value) * 100
-            return f"{payout_ratio:.2f}%"
+    if dividend_in_usd != 'N/A' and eps_next_y != 'N/A' and float(eps_next_y) != 0:
+        payout_ratio = (float(dividend_in_usd.replace(
+            '$', '').replace(',', '')) / float(eps_next_y)) * 100
+        return f"{payout_ratio:.2f}%"
 
     return 'N/A'
 
