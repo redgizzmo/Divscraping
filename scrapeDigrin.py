@@ -43,7 +43,8 @@ def extract_dgr(soup, label):
 
 
 def main():
-    ticker_symbol = input("Enter the ticker symbol (e.g., T): ").upper()
+    # ticker_symbol = input("Enter the ticker symbol (e.g., T): ").upper()
+    ticker_symbol = "T"
     digrin_data = fetch_digrin_data(ticker_symbol)
 
     if digrin_data:
