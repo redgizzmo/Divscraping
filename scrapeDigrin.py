@@ -16,23 +16,25 @@ def fetch_digrin_data(ticker):
         # Parse HTML content
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        dgr3 = extract_dgr(soup, 'DGR3')
-        dgr5 = extract_dgr(soup, 'DGR5')
-        dgr10 = extract_dgr(soup, 'DGR10')
-        dgr20 = extract_dgr(soup, 'DGR20')
+        dgr3 = get_value(soup, 'DGR3')
+        dgr5 = get_value(soup, 'DGR5')
+        dgr10 = get_value(soup, 'DGR10')
+        dgr20 = get_value(soup, 'DGR20')
+        divYears = get_value(soup, 'Years Paying Dividends')
 
         return {
             'DGR3': dgr3,
             'DGR5': dgr5,
             'DGR10': dgr10,
-            'DGR20': dgr20
+            'DGR20': dgr20,
+            'Years Paying Dividends': divYears
         }
     except requests.RequestException as e:
         print(f"Error: Unable to fetch Digrin data for {ticker}. {e}")
         return None
 
 
-def extract_dgr(soup, label):
+def get_value(soup, label):
     pattern = re.compile(fr'{label}.*?>(.*?)<\/strong>', re.DOTALL)
     match = pattern.search(str(soup))
     if match:
@@ -42,7 +44,7 @@ def extract_dgr(soup, label):
 
 def main():
     # ticker_symbol = input("Enter the ticker symbol (e.g., T): ").upper()
-    ticker_symbol = "AGNC"
+    ticker_symbol = "T"
     digrin_data = fetch_digrin_data(ticker_symbol)
 
     if digrin_data:
