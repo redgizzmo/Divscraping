@@ -7,8 +7,10 @@ def fetch_financial_info(ticker):
     url = f'https://finviz.com/quote.ashx?t={ticker}'
 
     try:
-        # Send HTTP request and check for successful response
-        response = requests.get(url)
+        # Send HTTP request with a custom User-Agent header
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
 
         # Parse HTML content
