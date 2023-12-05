@@ -30,6 +30,14 @@ def fetch_financial_info(ticker):
         return None
 
 
+def get_value(soup, label):
+    element = soup.find('td', text=label)
+    if element:
+        return element.find_next('b').get_text(strip=True)
+    else:
+        return 'N/A'
+
+
 def main():
     # Get user input for the ticker symbol
     ticker_symbol = input(
