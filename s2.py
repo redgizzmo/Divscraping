@@ -44,7 +44,7 @@ def get_value(soup, label):
     return 'N/A'
 
 
-ddef calculate_payout_ratio(soup):
+def calculate_payout_ratio(soup):
     dividend_in_usd = get_value(soup, 'Dividend')
     eps = get_value(soup, 'EPS (ttm)')
 
