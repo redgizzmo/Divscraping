@@ -18,9 +18,9 @@ def fetch_financial_info(ticker):
 
         # Extract general financial information
         financial_info = {
-            'EPS': get_value(soup, 'EPS (ttm):'),
-            'Stock Price': get_value(soup, 'Price:'),
-            'Dividend Yield': get_value(soup, 'Dividend %:')
+            'EPS': get_value(soup, 'EPS (ttm)'),
+            'Stock Price': get_value(soup, 'Price'),
+            'Dividend Yield': get_value(soup, 'Dividend %')
         }
 
         return financial_info
@@ -31,11 +31,12 @@ def fetch_financial_info(ticker):
 
 
 def get_value(soup, label):
-    element = soup.find('td', string=label)
-    if element:
-        return element.find_next('b').get_text(strip=True)
-    else:
-        return 'N/A'
+    label_element = soup.find('td', class_='snapshot-td2', string=label)
+    if label_element:
+        value_element = label_element.find_next('td', class_='snapshot-td2')
+        if value_element:
+            return value_element.get_text(strip=True)
+    return 'N/A'
 
 
 def main():
