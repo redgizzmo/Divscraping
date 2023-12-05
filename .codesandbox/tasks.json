@@ -1,6 +1,15 @@
 {
   // These tasks will run in order when initializing your CodeSandbox project.
-  "setupTasks": [],
+  "setupTasks": [
+    {
+      "command": "pip install requests",
+      "name": "pip install requests"
+    },
+    {
+      "command": "pip install BeautifulSoup4",
+      "name": "pip install BeautifulSoup4"
+    }
+  ],
 
   // These tasks can be run from CodeSandbox. Running one will open a log in the app.
   "tasks": {}
