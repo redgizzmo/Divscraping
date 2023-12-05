@@ -53,7 +53,8 @@ def get_numeric_value(soup, label):
             numeric_value = value_element.get_text(strip=True)
             # Convert abbreviations to numbers
             numeric_value = convert_abbreviations(numeric_value)
-            return numeric_value if numeric_value else 'N/A'
+            # Check if the numeric value is valid
+            return numeric_value if isinstance(numeric_value, (int, float)) else 'N/A'
     return 'N/A'
 
 
