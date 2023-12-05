@@ -16,11 +16,11 @@ def fetch_digrin_data(ticker):
         # Parse HTML content
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        dgr3 = get_value(soup, 'DGR3')
-        dgr5 = get_value(soup, 'DGR5')
-        dgr10 = get_value(soup, 'DGR10')
-        dgr20 = get_value(soup, 'DGR20')
-        divYears = get_value(soup, 'Years Paying Dividends')
+        dgr3 = get_valueDigrin(soup, 'DGR3')
+        dgr5 = get_valueDigrin(soup, 'DGR5')
+        dgr10 = get_valueDigrin(soup, 'DGR10')
+        dgr20 = get_valueDigrin(soup, 'DGR20')
+        divYears = get_valueDigrin(soup, 'Years Paying Dividends')
 
         return {
             'DGR3': dgr3,
@@ -34,7 +34,7 @@ def fetch_digrin_data(ticker):
         return None
 
 
-def get_value(soup, label):
+def get_valueDigrin(soup, label):
     pattern = re.compile(fr'{label}.*?>(.*?)<\/strong>', re.DOTALL)
     match = pattern.search(str(soup))
     if match:

@@ -18,16 +18,20 @@ def fetch_financial_info(ticker):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Extract general financial information
+        eps = get_valueFinviz(soup, 'EPS (ttm)')
+        forwardPE = get_valueFinviz(soup, 'Forward P/E')
+
         financial_info = {
-            'EPS (ttm)': get_value(soup, 'EPS (ttm)'),
-            'Stock Price': get_value(soup, 'Price'),
+            'EPS (ttm)': eps,
+            'Stock Price': get_valueFinviz(soup, 'Price'),
             # Updated visualization
-            'Dividend (Annual)': get_value(soup, 'Dividend'),
+            'Dividend (Annual)': get_valueFinviz(soup, 'Dividend'),
             'Dividend Payout Ratio': calculate_payout_ratio(soup),
-            'Dividend Yield': get_value(soup, 'Dividend %'),
-            'P/E': get_value(soup, 'P/E'),
-            'Forward P/E': get_value(soup, 'Forward P/E'),
+            'Dividend Yield': get_valueFinviz(soup, 'Dividend %'),
+            'P/E': get_valueFinviz(soup, 'P/E'),
+            'Forward P/E': forwardPE,
             'Shares Outstanding': int(get_numeric_value(soup, 'Shs Outstand')),
+            'Fair Value': calculate_fair_value_with_pe_ratio(eps, forwardPE)
         }
 
         return financial_info
@@ -37,7 +41,12 @@ def fetch_financial_info(ticker):
         return None
 
 
-def get_value(start_tag, label):
+def calculate_fair_value_with_pe_ratio(eps, target_pe_ratio):
+    fair_value = eps * target_pe_ratio
+    return fair_value
+
+
+def get_valueFinviz(start_tag, label):
     label_element = start_tag.find('td', class_='snapshot-td2', string=label)
     if label_element:
         value_element = label_element.find_next('td', class_='snapshot-td2')
@@ -73,8 +82,8 @@ def convert_abbreviations(value):
 
 
 def calculate_payout_ratio(soup):
-    dividend_in_usd = get_value(soup, 'Dividend')
-    eps_next_y = get_value(soup, 'EPS next Y')
+    dividend_in_usd = get_valueFinviz(soup, 'Dividend')
+    eps_next_y = get_valueFinviz(soup, 'EPS next Y')
 
     if dividend_in_usd != 'N/A' and eps_next_y != 'N/A' and float(eps_next_y) != 0:
         payout_ratio = (float(dividend_in_usd.replace(
