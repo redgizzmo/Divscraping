@@ -20,7 +20,11 @@ def fetch_financial_info(ticker):
         financial_info = {
             'EPS': get_value(soup, 'EPS (ttm)'),
             'Stock Price': get_value(soup, 'Price'),
-            'Dividend Yield': get_value(soup, 'Dividend %')
+            'Dividend in USD': get_value(soup, 'Dividend'),
+            'Dividend Payout Ratio': get_value(soup, 'Dividend % of Earnings'),
+            'P/E (ttm)': get_value(soup, 'P/E'),
+            'Forward P/E': get_value(soup, 'Forward P/E'),
+            'Shares Outstanding': get_value(soup, 'Shs Outstand'),
         }
 
         return financial_info
