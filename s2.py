@@ -36,8 +36,8 @@ def fetch_financial_info(ticker):
         return None
 
 
-def get_value(soup, label):
-    label_element = soup.find('td', class_='snapshot-td2', string=label)
+def get_value(start_tag, label):
+    label_element = start_tag.find('td', class_='snapshot-td2', string=label)
     if label_element:
         value_element = label_element.find_next('td', class_='snapshot-td2')
         if value_element:
@@ -45,8 +45,8 @@ def get_value(soup, label):
     return 'N/A'
 
 
-def get_numeric_value(soup, label):
-    label_element = soup.find('td', class_='snapshot-td2', string=label)
+def get_numeric_value(start_tag, label):
+    label_element = start_tag.find('td', class_='snapshot-td2', string=label)
     if label_element:
         value_element = label_element.find_next('td', class_='snapshot-td2')
         if value_element:
