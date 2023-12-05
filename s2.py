@@ -18,9 +18,9 @@ def fetch_financial_info(ticker):
 
         # Extract general financial information
         financial_info = {
-            'EPS': soup.find(text='EPS (ttm):').find_next('b').text,
-            'Stock Price': soup.find(text='Price:').find_next('b').text,
-            'Dividend Yield': soup.find(text='Dividend %:').find_next('b').text
+            'EPS': get_value(soup, 'EPS (ttm):'),
+            'Stock Price': get_value(soup, 'Price:'),
+            'Dividend Yield': get_value(soup, 'Dividend %:')
         }
 
         return financial_info
