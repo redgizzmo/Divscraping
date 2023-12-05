@@ -26,7 +26,7 @@ def fetch_financial_info(ticker):
             'Dividend Yield': get_value(soup, 'Dividend %'),
             'P/E': get_value(soup, 'P/E'),
             'Forward P/E': get_value(soup, 'Forward P/E'),
-            'Shares Outstanding': get_numeric_value(soup, 'Shs Outstand'),
+            'Shares Outstanding': int(get_numeric_value(soup, 'Shs Outstand')),
         }
 
         return financial_info
