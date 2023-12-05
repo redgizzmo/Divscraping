@@ -1,3 +1,4 @@
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -50,11 +51,23 @@ def get_numeric_value(soup, label):
         value_element = label_element.find_next('td', class_='snapshot-td2')
         if value_element:
             numeric_value = value_element.get_text(strip=True)
-            # Remove non-numeric characters
-            numeric_value = ''.join(
-                char for char in numeric_value if char.isdigit() or char == '.')
+            # Convert abbreviations to numbers
+            numeric_value = convert_abbreviations(numeric_value)
             return numeric_value if numeric_value else 'N/A'
     return 'N/A'
+
+
+def convert_abbreviations(value):
+    # Define a dictionary for common abbreviations
+    abbreviations = {'B': 1e9, 'M': 1e6, 'K': 1e3}
+    # Use regular expression to find numeric and abbreviation parts
+    match = re.match(r'(?P<numeric>[\d.]+)\s*(?P<abbrev>\w*)', value)
+    if match:
+        numeric_part = float(match.group('numeric'))
+        abbrev_part = match.group('abbrev').upper()
+        # Multiply numeric part by the corresponding factor from the dictionary
+        return numeric_part * abbreviations.get(abbrev_part, 1)
+    return value
 
 
 def calculate_payout_ratio(soup):
