@@ -1,3 +1,4 @@
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -32,13 +33,10 @@ def fetch_digrin_data(ticker):
 
 
 def extract_dgr(soup, label):
-    dgr_element = soup.find('div', class_='col-sm-3', string=label)
-    if dgr_element:
-        dgr_label = dgr_element.find('p', text=f"{label}:")
-        if dgr_label:
-            dgr_value = dgr_label.find_next('strong')
-            if dgr_value:
-                return dgr_value.get_text(strip=True)
+    pattern = re.compile(fr'{label}.*?>(.*?)<\/strong>', re.DOTALL)
+    match = pattern.search(str(soup))
+    if match:
+        return match.group(1).strip().replace('<strong>', '').replace('</strong>', '')
     return 'N/A'
 
 
