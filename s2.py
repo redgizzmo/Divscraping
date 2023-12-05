@@ -31,7 +31,7 @@ def fetch_financial_info(ticker):
             'P/E': get_valueFinviz(soup, 'P/E'),
             'Forward P/E': forwardPE,
             'Shares Outstanding': int(get_numeric_value(soup, 'Shs Outstand')),
-            'Fair Value': calculate_fair_value_with_pe_ratio(eps, forwardPE)
+            'Fair Value': calculate_fair_value_with_pe_ratio(float(get_numeric_value(eps)), float(get_numeric_value(forwardPE)))
         }
 
         return financial_info
