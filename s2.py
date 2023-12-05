@@ -22,7 +22,7 @@ def fetch_financial_info(ticker):
             'Stock Price': get_value(soup, 'Price'),
             'Dividend in USD': get_value(soup, 'Dividend'),
             'Dividend Yield': get_value(soup, 'Dividend %'),
-            'Dividend Payout Ratio': get_value(soup, "Dividend % of Earnings"),
+            'Dividend Payout Ratio': calculate_payout_ratio(soup),
             'P/E (ttm)': get_value(soup, 'P/E'),
             'Forward P/E': get_value(soup, 'Forward P/E'),
             'Shares Outstanding': get_value(soup, 'Shs Outstand'),
@@ -42,6 +42,17 @@ def get_value(soup, label):
         if value_element:
             return value_element.get_text(strip=True)
     return 'N/A'
+
+
+def calculate_payout_ratio(soup):
+    dividend_in_usd = get_value(soup, 'Dividend')
+    eps = get_value(soup, 'EPS (ttm)')
+
+    if dividend_in_usd != 'N/A' and eps != 'N/A' and float(eps) != 0:
+        payout_ratio = (float(dividend_in_usd) / float(eps)) * 100
+        return f"{payout_ratio:.2f}%"
+    else:
+        return 'N/A'
 
 
 def main():
