@@ -8,6 +8,10 @@
     {
       "command": "pip install BeautifulSoup4",
       "name": "pip install BeautifulSoup4"
+    },
+    {
+      "command": "pip install gspread",
+      "name": "pip install gspread"
     }
   ],
 
